@@ -21,7 +21,7 @@ var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter(); 
 
 event.on('req_complete', function(hbPrice,zbPrice) { 
-    let diff = (hbPrice-zbPrice)*100/zbPrice;
+    let diff = (zbPrice-hbPrice)*100/hbPrice;
     console.log('火币价格：'+hbPrice
     +'|'+'ZB价格：'+ zbPrice
     +'|'+'差异：'+ diff+'%');     
