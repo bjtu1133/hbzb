@@ -29,7 +29,7 @@ event.on('req_complete', function(hbPrice,zbPrice) {
         +'|火币价格：'+hbPrice
         +'|'+'ZB价格：'+ zbPrice
         +'|'+'差异：'+ diff+'%');
-    if(array.length > 10){
+    if(array.length > 2000){
         let arrayToSave = array;
         array = [];
         event.emit('write_array',arrayToSave);
