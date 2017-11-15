@@ -6,7 +6,7 @@ let events = require('events');
 let timer = require('timers');
 const { URL } = require('url');
 
-var app = express();
+let app = express();
 /*
 var server = app.listen(8081, function () {
  
@@ -17,8 +17,8 @@ var server = app.listen(8081, function () {
  
 });*/
 
-var EventEmitter = require('events').EventEmitter; 
-var event = new EventEmitter(); 
+let EventEmitter = require('events').EventEmitter; 
+let event = new EventEmitter(); 
 
 event.on('req_complete', function(hbPrice,zbPrice) { 
     let diff = (zbPrice-hbPrice)*100/hbPrice;
