@@ -52,6 +52,7 @@ event.on('req_complete', function(hbPrice,zbPrice) {
             'ts' : date.getTime(),
             'hbPrice' : hbPrice,
             'zbPrice' : zbPrice,
+            'diff' : diff,
             'avg' : avg
         }
     );
@@ -105,7 +106,6 @@ event.on('update_avg',(rateStr)=>{
     }
 
     avg = (sum/num).toFixed(2); 
-    //console.log('sum:'+sum + '|num:'+num+'|queue:'+avg_queue);
 });
 
 
@@ -131,7 +131,6 @@ function getLatestPrice() {
                 try{
                     jsonChunk = JSON.parse(chunk);
                 } catch (e) {
-                    console.log(e);
                     return;
                 }
                 if (jsonChunk
@@ -146,12 +145,15 @@ function getLatestPrice() {
                 }
             }
         });
+        res.on('err',(e)=>{
+            console.log(e);
+        });
     });
     
     const reqZB = http.get('http://api.zb.com/data/v1/ticker?market=btc_usdt', (res) => {
         res.setEncoding('utf8');
         res.on('data', (chunk) => {
-            //process.stdout.write(d);
+            //process.stdout.write(chunk);
             //console.log("ZB Latest");
             //console.log(JSON.parse(chunk).ticker.last);
             
@@ -165,6 +167,9 @@ function getLatestPrice() {
                     }
                 }
             }  
+        });
+        res.on('err',(e)=>{
+            console.log(e);
         });
     });
 }
