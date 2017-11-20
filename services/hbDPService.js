@@ -58,6 +58,25 @@ let getHBBid = (amount)=> {
         });
     });
 };
+//获取当前买入和卖出价格
+let getHBBidAsk = (amount)=> {
+    return new Promise((resolve,reject) => {
+        getHBDepth().then((trunk) => {
+            let json = utils.trunkToJsonObject(trunk);
+            if(isDPValid(json)) {
+                let bid = utils.getPriceByMount(json.tick.bids, amount);
+                let ask = utils.getPriceByMount(json.tick.asks, amount);
+                resolve({
+                    bid : bid,
+                    ask : ask,
+                    ts : json.ts
+                });
+            }else {
+                reject(ERROR_VALIDATION);
+            }    
+        });
+    });
+};
 
 let isDPValid = (dp) => {
     //console.log('check DP json object');
@@ -71,5 +90,5 @@ let isDPValid = (dp) => {
     }
 };
 
-module.exports = {getHBDepth, getHBAsk, getHBBid};
+module.exports = {getHBDepth, getHBAsk, getHBBid, getHBBidAsk};
 

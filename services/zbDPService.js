@@ -54,6 +54,26 @@ let getZBBid = (amount) => {
     });
 };
 
+let getZBBidAsk = (amount) => {
+    return new Promise((resolve,reject)=>{
+        getZBDepth().then((trunk)=>{
+            let json = utils.trunkToJsonObject(trunk);
+            if(isDPValid(json)) {
+                let bid = utils.getPriceByMount(json.bids,amount);
+                let ask = utils.getPriceByMount(json.asks,amount);
+                resolve({
+                    bid : bid,
+                    ask : ask,
+                    ts : json.timestamp
+                });
+            } else {
+                reject(ERROR_VALIDATION);
+            } 
+        });
+    });
+};
+
+
 let isDPValid = (dp)=>{
     if (dp && dp.asks && dp.bids) {
         return true;
@@ -62,4 +82,4 @@ let isDPValid = (dp)=>{
     }
 };
 
-module.exports = {getZBDepth, getZBAsk, getZBBid};
+module.exports = {getZBDepth, getZBAsk, getZBBid,getZBBidAsk};

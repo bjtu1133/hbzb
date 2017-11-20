@@ -14,7 +14,7 @@ let trunkToJsonObject = (trunk) => {
 //dpArr must be sorted
 let getPriceByMount = (dpArr, amount) => {
     for (let dp of dpArr) {
-        amount -= dp[1];
+        amount -= dp[1];      
         if(amount <= 0) {
             return dp[0];
         }   
