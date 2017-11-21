@@ -60,6 +60,9 @@ let getZBBidAsk = (amount) => {
             let json = utils.trunkToJsonObject(trunk);
             if(isDPValid(json)) {
                 let bid = utils.getPriceByMount(json.bids,amount);
+                json.asks.sort((a,b)=>{
+                    return (a[0]-b[0]);
+                });
                 let ask = utils.getPriceByMount(json.asks,amount);
                 resolve({
                     bid : bid,

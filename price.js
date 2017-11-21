@@ -19,14 +19,14 @@ let zbSell = INVALID_PRICE;
 function update() {
     hbDPService.getHBBidAsk(BT_PER_TRADE).then((data)=>{
         //console.log(data);
-        hbBuy = data.bid;
-        hbSell = data.ask;
+        hbSell = data.bid;
+        hbBuy = data.ask;
         hbTs = data.ts/1000;
     });
     zbDPService.getZBBidAsk(BT_PER_TRADE).then((data)=>{
         //console.log(data);
-        zbBuy = data.bid;
-        zbSell = data.ask;
+        zbSell = data.bid;
+        zbBuy = data.ask;
         zbTs = data.ts;
     });
 };
@@ -35,13 +35,15 @@ function print() {
     
     let posD = ((zbSell - hbBuy)*100/hbBuy).toFixed(2);
     let negD = ((zbBuy - hbSell)*100/hbSell).toFixed(2);
-    
-    console.log('珠卖/火买：'+ posD + '%'
-                + '|珠买/火卖' + negD + '%'
+    let dt = new Date();
+    let record = ('珠卖/火买：'+ posD + '%'
+                + '|珠买/火卖：' + negD + '%'
                 + '|珠宝买/卖：' + zbBuy +'/'+ zbSell
                 + '|火币买/卖：' + hbBuy +'/'+ hbSell
                 + '|时间差：'+timeDiff
-                );
+                + '|'+dt.toLocaleDateString()
+                + '|'+dt.toLocaleTimeString());
+    console.log(record);
 }
 
 setInterval(update,1500);
