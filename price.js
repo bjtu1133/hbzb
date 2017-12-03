@@ -30,21 +30,48 @@ function update() {
         zbTs = data.ts;
     });
 };
-function print() {
+function check() {
     let timeDiff = Math.abs(zbTs-hbTs).toFixed(2);
     
-    let posD = ((zbSell - hbBuy)*100/hbBuy).toFixed(2);
-    let negD = ((zbBuy - hbSell)*100/hbSell).toFixed(2);
+    let buyHB = (zbSell - hbBuy/0.998).toFixed(2);
+    let sellHB = (hbSell*0.998- zbBuy).toFixed(2);
+    let exp = ((zbSell - hbBuy * 1 / 0.998) + (hbSell * 0.998 - zbBuy)).toFixed(3);
     let dt = new Date();
-    let record = ('珠卖/火买：'+ posD + '%'
-                + '|珠买/火卖：' + negD + '%'
-                + '|珠宝买/卖：' + zbBuy +'/'+ zbSell
-                + '|火币买/卖：' + hbBuy +'/'+ hbSell
-                + '|时间差：'+timeDiff
-                + '|'+dt.toLocaleDateString()
-                + '|'+dt.toLocaleTimeString());
-    console.log(record);
+    
+    let result = {
+        ts : dt,
+        tm : dt.toLocaleDateString()+"|"+dt.toLocaleTimeString(),
+        buyHBRate : buyHB,
+        sellHBRate : sellHB,
+        zbBuyP : zbBuy,
+        zbSellP : zbSell,
+        hbBuyP : hbBuy,
+        hbSellP : hbSell
+    }
+
+    if (timeDiff < 2.0) {
+        saveData (result);
+        printData (result);
+    }
+    
+    
 }
 
-setInterval(update,1500);
-setInterval(print,4000);
+function printData(result) {
+    let record = ('买火／卖珠：'+ result.buyHBRate
+        + '|卖火／买珠：' + result.sellHBRate
+        + '|珠宝买/卖：' + result.zbBuyP +'/'+ result.zbSellP
+        + '|火币买/卖：' + result.hbBuyP +'/'+ result.hbSellP
+        + '|'+result.tm);
+    console.log(record);
+}
+setInterval(update,4000);
+setInterval(check,3000);
+
+/*
+hbDPService.getHBBidAsk(BT_PER_TRADE).then((data)=>{
+    //console.log(data);
+    hbSell = data.bid;
+    hbBuy = data.ask;
+    hbTs = data.ts/1000;
+});*/

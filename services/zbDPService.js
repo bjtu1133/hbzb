@@ -20,40 +20,6 @@ let getZBDepth = () => {
     });
 };
 
-let getZBAsk = (amount) => {
-    return new Promise((resolve,reject)=>{
-        getZBDepth().then((trunk)=>{
-            let json = utils.trunkToJsonObject(trunk);
-            if(isDPValid(json)) {
-                let price = utils.getPriceByMount(json.asks,amount);
-                resolve(price);
-                if(price){
-                    resolve(price);
-                }
-            } else {
-                reject(ERROR_VALIDATION);
-            } 
-        });
-    });
-};
-
-let getZBBid = (amount) => {
-    return new Promise((resolve,reject)=>{
-        getZBDepth().then((trunk)=>{
-            let json = utils.trunkToJsonObject(trunk);
-            if(isDPValid(json)) {
-                let price = utils.getPriceByMount(json.bids,amount);
-                resolve(price);
-                if(price){
-                    resolve(price);
-                }
-            } else {
-                reject(ERROR_VALIDATION);
-            } 
-        });
-    });
-};
-
 let getZBBidAsk = (amount) => {
     return new Promise((resolve,reject)=>{
         getZBDepth().then((trunk)=>{
@@ -85,4 +51,4 @@ let isDPValid = (dp)=>{
     }
 };
 
-module.exports = {getZBDepth, getZBAsk, getZBBid,getZBBidAsk};
+module.exports = {getZBDepth, getZBBidAsk};

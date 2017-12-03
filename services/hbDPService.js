@@ -9,55 +9,22 @@ const ERROR_VALIDATION = 'FAIL_VALIDATION';
 let getHBDepth = () => {
     return new Promise((resolve,reject)=>{
         let request = https.get(URL, (res) => {
-            res.setEncoding('utf8');
+            let buffers = [];
             res.on('data', (chunk) => {
-                resolve(chunk);
+                buffers.push(chunk);
             });
+            res.on('end',()=>{
+                let wholeData = Buffer.concat(buffers);
+                let dataStr = wholeData.toString('utf8');
+                resolve(dataStr);
+            })
             res.on('err',(e)=>{
-                console.log(e);
+                console.log("getHBDepth Failed "+e);
             });
         });
     });
 };
-// 当前卖出价格
-let getHBAsk = (amount) => {
-    return new Promise((resolve,reject) => {
-        getHBDepth().then((trunk) => {
-            let json = utils.trunkToJsonObject(trunk);
-            if(isDPValid(json)) {
-                let asks = json.tick.asks;
-                for (let ask of asks) {
-                    amount -= ask[1];
-                    if(amount <= 0) {
-                        resolve(ask[0]);
-                    }
-                }
-            }else {
-                reject(ERROR_VALIDATION);
-            }    
-        });
-    });
-};
-//当前买入价格
-let getHBBid = (amount)=> {
-    return new Promise((resolve,reject) => {
-        getHBDepth().then((trunk) => {
-            let json = utils.trunkToJsonObject(trunk);
-            if(isDPValid(json)) {
-                let bids = json.tick.bids;
-                //console.log(bids);
-                for (let bid of bids) {
-                    amount -= bid[1];
-                    if(amount <= 0) {
-                        resolve(bid[0]);
-                    }
-                }
-            }else {
-                reject(ERROR_VALIDATION);
-            }    
-        });
-    });
-};
+
 //获取当前买入和卖出价格
 let getHBBidAsk = (amount)=> {
     return new Promise((resolve,reject) => {
@@ -90,5 +57,5 @@ let isDPValid = (dp) => {
     }
 };
 
-module.exports = {getHBDepth, getHBAsk, getHBBid, getHBBidAsk};
+module.exports = {getHBDepth, getHBBidAsk};
 
