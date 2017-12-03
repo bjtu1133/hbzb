@@ -50,7 +50,7 @@ function check() {
     }
 
     if (timeDiff < 2.0) {
-        saveData (result);
+        //saveData (result);
         printData (result);
     }
     
