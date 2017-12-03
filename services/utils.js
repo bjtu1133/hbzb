@@ -22,5 +22,16 @@ let getPriceByMount = (dpArr, amount) => {
     return null;
 }
 
-module.exports = {trunkToJsonObject, getPriceByMount};
+let printData = (result) => {
+    let record = ('买火／卖珠：'+ result.buyHBRate
+        + '('+result.buyHbAvg+')'
+        + '|卖火／买珠：' + result.sellHBRate
+        + '('+result.sellHbAvg+')'
+        + '|珠宝买/卖：' + result.zbBuyP +'/'+ result.zbSellP
+        + '|火币买/卖：' + result.hbBuyP +'/'+ result.hbSellP
+        + '|'+result.tm);
+    console.log(record);
+}
+
+module.exports = {trunkToJsonObject, getPriceByMount, printData};
 
