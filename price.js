@@ -6,6 +6,8 @@ let hbDPService = require('./services/hbDPService');
 let zbDPService = require('./services/zbDPService');
 let TradeService = require('./services/TradeService');
 
+let ComparedDepthResult = require('./model/ComparedDepthResult');
+
 const BT_PER_TRADE = 0.2;
 const INVALID_PRICE = -1;
 
@@ -19,8 +21,8 @@ let zbSell = INVALID_PRICE;
 
 let tradeService = new TradeService();
 
-setInterval(update,4000);
-setInterval(check,6000);
+setInterval(update,3000);
+setInterval(check,4000);
 
 function update() {
     hbDPService.getHBBidAsk(BT_PER_TRADE).then((data)=>{
@@ -47,17 +49,9 @@ function check() {
     }
 
     let dt = new Date();
-    
-    let result = {
-        ts : dt,
-        tm : dt.toLocaleDateString()+"|"+dt.toLocaleTimeString(),
-        buyHBRate : (zbSell - hbBuy/0.998).toFixed(2),
-        sellHBRate : (hbSell*0.998- zbBuy).toFixed(2),
-        zbBuyP : zbBuy,
-        zbSellP : zbSell,
-        hbBuyP : hbBuy,
-        hbSellP : hbSell
-    }
+
+    let result = new ComparedDepthResult(
+        hbBuy, hbSell, zbBuy, zbSell, new Date());
 
     tradeService.process(result);
 }
