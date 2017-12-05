@@ -1,0 +1,30 @@
+{
+  "name": "hbzb",
+  "version": "1.0.0",
+  "description": "This is a trading tool",
+  "main": "app.js",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.2",
+    "install": "^0.10.2",
+    "moment": "^2.19.3",
+    "npm": "^5.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjtu1133/hbzb.git"
+  },
+  "keywords": [
+    "t"
+  ],
+  "author": "Jianbo Hu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjtu1133/hbzb/issues"
+  },
+  "homepage": "https://github.com/bjtu1133/hbzb#readme"
+}
