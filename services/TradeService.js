@@ -3,6 +3,8 @@
 let utils = require('./utils');
 let fs = require('fs');
 let AvgQueue = require('../model/AvgQueue');
+let TrageHBService = require('./TradeHBService');
+
 const AVG_QUEUE_CAP = 200;
 const BUY_HB_TRIGGER = 20;
 const SELL_HB_TRIGGER = 40;
@@ -25,7 +27,9 @@ module.exports = class TradeService {
 
         this.bought = false;
         this.boughtRate = undefined;
-
+        
+        this.tradeHBService = new TrageHBService();
+        
         fs.appendFile(this.dataFilePath, '', (err) => {
             if (err) throw err;
             console.log('created log file for Price Data');
@@ -35,6 +39,8 @@ module.exports = class TradeService {
             if (err) throw err;
             console.log('created log file for Trade Data');
         });
+
+        
     }
 
     process(result) {

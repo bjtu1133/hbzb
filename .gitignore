@@ -3,3 +3,4 @@ log-file.txt
 history*
 priceData
 tradeData
+config/configure.json
