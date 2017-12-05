@@ -6,6 +6,7 @@ let AvgQueue = require('../model/AvgQueue');
 const AVG_QUEUE_CAP = 200;
 const BUY_HB_TRIGGER = 20;
 const SELL_HB_TRIGGER = 40;
+const BUY_BAR = -300;
 module.exports = class TradeService {
     constructor() {
         let ts = new Date();
@@ -67,11 +68,15 @@ module.exports = class TradeService {
         let curRate = Number(result.buyHBRate);
         let curAvg = Number(result.buyHbAvg);
 
-        if (curRate > curAvg + BUY_HB_TRIGGER) {
-            return true;
-        } else {
+        if (curRate + BUY_BAR <= 0) {
             return false;
         }
+
+        if (curRate > curAvg + BUY_HB_TRIGGER ) {
+            return true;
+        } 
+        
+        return false;    
     }
 
     shouldSellHB(result) {
