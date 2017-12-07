@@ -12,6 +12,7 @@ const ACCOUNT_ID = 'accountId';
 const URL_HUOBI_PRO = 'api.huobi.pro';
 const PATH_ORDER_ORDERS = 'v1/order/orders';
 const PATH_GET_ACCOUNTS = '/v1/account/accounts';
+const PATH_CREATE_ORDER = '/v1/order/orders/place';
 const PATH_BALANCE = '';
 const POST = 'POST';
 
@@ -29,6 +30,11 @@ module.exports = class HBTradeService {
         /*this.balance.then((data)=>{
             console.log(data);
         });*/
+        //console.log('Creating Order');
+        /*this.createOrder().then((data) => {
+            console.log(data);
+        });*/
+        //this.createOrder();
     }
 
     signSha(method, baseurl, path) {
@@ -38,7 +44,7 @@ module.exports = class HBTradeService {
         }
         var p = pars.sort().join("&");
         var meta = [method, baseurl, path, p].join('\n');
-        console.log(meta);
+        //console.log(meta);
         var hash = hmacSHA256(meta, this.securityKey);
         var Signature = encodeURIComponent(cryptoJS.enc.Base64.stringify(hash));
         // console.log(`Signature: ${Signature}`);
@@ -72,11 +78,47 @@ module.exports = class HBTradeService {
                     let wholeData = Buffer.concat(buffers);
                     let dataStr = wholeData.toString('utf8');
                     resolve(dataStr);
-                })
+                });
                 res.on('err',(e)=>{
                     console.log("getBalance Failed "+e);
                 });
             });
         });
+    }
+
+    createOrder() {
+        //return new Promise((resolve,reject) => {
+
+            let method = PATH_CREATE_ORDER;
+            let payload = this.signSha('POST', URL_HUOBI_PRO, method);
+            let url = `https://${URL_HUOBI_PRO}${method}?${payload}`;
+/*
+            body['account-id'] = this.accountId;
+            body.type = 'buy-limit';
+            body.amount = 0.001;
+            body.symbol = 'btcusdt';
+            body.price = 8000;
+*/
+            const options = {
+                hostname: URL_HUOBI_PRO,
+                port: 443,
+                path: `${method}?${payload}`,
+                method: 'POST'
+            };
+            
+            const req = https.request(options, (res) => {
+                console.log('statusCode:', res.statusCode);
+                console.log('headers:', res.headers);
+            
+                res.on('data', (d) => {
+                process.stdout.write(d);
+                });
+            });
+            
+            req.on('error', (e) => {
+                console.error(e);
+            });
+            req.end();
+        //});
     }
 }
